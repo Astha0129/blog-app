@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { usePosts } from '../context/PostContext';
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { usePosts } from "../context/PostContext";
 
 function Hero({ onSearch }) {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { posts } = usePosts();
-  const [searchVal, setSearchVal] = useState('');
+  const [searchVal, setSearchVal] = useState("");
   const [visible, setVisible] = useState(false);
   const inputRef = useRef(null);
 
@@ -22,14 +22,16 @@ function Hero({ onSearch }) {
     if (inputRef.current) inputRef.current.blur();
   };
 
-  const totalAuthors = [...new Set(posts.map((p) => p.author?.name || p.author))].length;
+  const totalAuthors = [
+    ...new Set(posts.map((p) => p.author?.name || p.author)),
+  ].length;
   const totalLikes = posts.reduce((sum, p) => sum + (p.likes || 0), 0);
 
   return (
     <section className="hero-section">
       <div className="hero-bg-mesh" />
 
-      <div className={`container hero-content ${visible ? 'visible' : ''}`}>
+      <div className={`container hero-content ${visible ? "visible" : ""}`}>
         {/* Badge */}
         <div className="hero-badge">
           <i className="bi bi-stars" />
@@ -44,8 +46,8 @@ function Hero({ onSearch }) {
 
         {/* Subtitle */}
         <p className="hero-subtitle">
-          Discover insightful articles on technology, design, lifestyle, travel, and food —
-          or share your own story with thousands of readers.
+          Discover insightful articles on technology, design, lifestyle, travel,
+          and food — or share your own story with thousands of readers.
         </p>
 
         {/* Search */}
@@ -71,15 +73,19 @@ function Hero({ onSearch }) {
         <div className="hero-cta-group">
           <button
             className="btn-primary-custom"
-            onClick={() => navigate(isAuthenticated ? '/posts/new' : '/signup')}
+            onClick={() => navigate(isAuthenticated ? "/posts/new" : "/signup")}
             id="hero-write-btn"
           >
             <i className="bi bi-pencil-square" />
-            {isAuthenticated ? 'Write a Post' : 'Start Writing'}
+            {isAuthenticated ? "Write a Post" : "Start Writing"}
           </button>
           <button
             className="btn-secondary-custom"
-            onClick={() => document.getElementById('posts-section')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() =>
+              document
+                .getElementById("posts-section")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
           >
             <i className="bi bi-arrow-down" />
             Explore Posts
