@@ -1,0 +1,495 @@
+/* ====================================================================
+   BlogSphere – Supplemental Component Styles (style.css)
+   Extends index.css with component-specific and theme-specific rules.
+==================================================================== */
+
+/* ─── Light Theme Override ────────────────────────────────────────── */
+[data-theme='light'] {
+  --bg-page:       #f8faff;
+  --bg-card:       rgba(255,255,255,0.8);
+  --bg-card-hover: rgba(255,255,255,0.95);
+  --bg-glass:      rgba(255,255,255,0.75);
+  --bg-input:      #ffffff;
+  --bg-input-focus: rgba(124,58,237,0.05);
+
+  --border-subtle: rgba(0,0,0,0.08);
+  --border-mid:    rgba(0,0,0,0.14);
+  --border-glow:   rgba(124,58,237,0.3);
+
+  --text-primary:   #0f172a;
+  --text-secondary: #1e293b;
+  --text-muted:     #475569;
+  --text-faint:     #94a3b8;
+
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:  0 8px 30px rgba(0,0,0,0.12);
+  --shadow-lg:  0 20px 60px rgba(0,0,0,0.15);
+  --shadow-glow: 0 0 40px rgba(124,58,237,0.12);
+}
+
+[data-theme='light'] body {
+  background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #f0f9ff 100%);
+}
+
+[data-theme='light'] .bs-navbar {
+  background: rgba(248,250,255,0.85) !important;
+  border-bottom-color: rgba(0,0,0,0.08);
+}
+
+[data-theme='light'] .orb { opacity: 0.06; }
+
+[data-theme='light'] .post-card,
+[data-theme='light'] .form-card,
+[data-theme='light'] .sidebar-card,
+[data-theme='light'] .comment-item,
+[data-theme='light'] .comment-form,
+[data-theme='light'] .glass-card {
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='light'] .skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+}
+
+/* ─── Hero (supplemental) ─────────────────────────────────────────── */
+.hero-content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.hero-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-search-form { margin-bottom: 2rem; }
+.hero-search-wrapper {
+  display: flex;
+  align-items: center;
+  max-width: 580px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.hero-search-wrapper:focus-within {
+  border-color: var(--primary-mid);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15), var(--shadow-glow);
+}
+.hero-search-icon {
+  padding: 0 0 0 1.2rem;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.hero-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.975rem;
+  padding: 0.85rem 1rem;
+  font-family: inherit;
+}
+.hero-search-input::placeholder { color: var(--text-faint); }
+.hero-search-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.85rem 1.4rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+.hero-search-btn:hover { background: var(--primary-dark, #6d28d9); }
+
+/* ─── Category Filter Pills ───────────────────────────────────────── */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.category-pill:hover {
+  border-color: var(--primary-mid);
+  color: var(--primary-light);
+  background: rgba(124,58,237,0.08);
+}
+.category-pill.active {
+  background: linear-gradient(135deg, var(--primary), #6d28d9);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+.category-pill-count {
+  background: rgba(255,255,255,0.2);
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
+.category-pill:not(.active) .category-pill-count {
+  background: var(--border-subtle);
+  color: var(--text-faint);
+}
+
+/* ─── Tag chips extended ──────────────────────────────────────────── */
+.tag-cyan   { background: rgba(6,182,212,0.12)!important; border-color: rgba(6,182,212,0.3)!important; color: #67e8f9!important; }
+.tag-orange { background: rgba(245,158,11,0.12)!important; border-color: rgba(245,158,11,0.3)!important; color: #fcd34d!important; }
+
+.tag-chip-selected {
+  background: rgba(124,58,237,0.25) !important;
+  border-color: var(--primary-mid) !important;
+  color: var(--primary-light) !important;
+}
+
+/* ─── Pagination ──────────────────────────────────────────────────── */
+.pagination-wrapper { gap: 0.3rem; }
+.pagination-btn {
+  min-width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0 0.5rem;
+}
+.pagination-btn:hover:not(:disabled):not(.active) {
+  background: var(--bg-card-hover);
+  border-color: var(--border-mid);
+  color: var(--text-primary);
+}
+.pagination-btn.active {
+  background: var(--primary);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 2px 10px var(--primary-glow);
+}
+.pagination-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.pagination-ellipsis {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  padding: 0 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Like Button ─────────────────────────────────────────────────── */
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.like-btn:hover {
+  border-color: rgba(239,68,68,0.4);
+  color: #f87171;
+  background: rgba(239,68,68,0.08);
+}
+.like-btn.liked {
+  background: rgba(239,68,68,0.12);
+  border-color: rgba(239,68,68,0.4);
+  color: #f87171;
+}
+.like-btn.liked .bi-heart-fill { color: #f87171; }
+.like-btn.animating {
+  animation: heartPop 0.4s var(--transition-spring);
+}
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.like-btn-sm { padding: 0.3rem 0.65rem; font-size: 0.78rem; }
+
+/* ─── Auth Pages ──────────────────────────────────────────────────── */
+.auth-page {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+.auth-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+.auth-header { text-align: center; margin-bottom: 1.75rem; }
+.auth-logo {
+  font-size: 2rem;
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.auth-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+}
+.auth-subtitle { color: var(--text-muted); font-size: 0.9rem; }
+.auth-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+}
+.auth-link { color: var(--primary-light); font-weight: 600; }
+.auth-link:hover { text-decoration: underline; }
+
+/* ─── Form Extras ─────────────────────────────────────────────────── */
+.input-error {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.12) !important;
+}
+.field-error {
+  color: #fca5a5;
+  font-size: 0.78rem;
+  margin-top: 0.3rem;
+}
+.input-with-icon { position: relative; }
+.input-icon-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0.2rem;
+  font-size: 0.95rem;
+  transition: color var(--transition-fast);
+}
+.input-icon-btn:hover { color: var(--text-muted); }
+
+/* ─── Emoji Picker ────────────────────────────────────────────────── */
+.emoji-picker-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-subtle);
+  background: var(--bg-input);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+.emoji-picker-btn:hover { border-color: var(--primary-mid); transform: scale(1.1); }
+.emoji-picker-btn.active {
+  border-color: var(--primary-mid);
+  background: rgba(124,58,237,0.15);
+  box-shadow: 0 2px 10px var(--primary-glow);
+  transform: scale(1.15);
+}
+
+/* ─── Navbar extras ───────────────────────────────────────────────── */
+.user-avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-md);
+  min-width: 180px;
+  box-shadow: var(--shadow-md);
+  z-index: 200;
+  animation: scaleIn 0.2s var(--transition-spring);
+  overflow: hidden;
+}
+.nav-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  text-decoration: none;
+}
+.nav-dropdown-item:hover { background: var(--border-subtle); }
+.nav-dropdown-item.text-danger-item { color: var(--danger); }
+.nav-dropdown-divider { height: 1px; background: var(--border-subtle); margin: 0.25rem 0; }
+
+.footer-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+/* ─── Profile Page ────────────────────────────────────────────────── */
+.profile-card {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.profile-cover {
+  height: 160px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.4) 0%, rgba(236,72,153,0.3) 50%, rgba(6,182,212,0.3) 100%);
+  position: relative;
+}
+.profile-body {
+  padding: 0 2rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.profile-avatar-wrap { margin-top: -40px; flex-shrink: 0; }
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  border: 4px solid var(--bg-page);
+}
+.profile-info { flex: 1; min-width: 200px; padding-top: 0.75rem; }
+.profile-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.2rem; }
+.profile-email { color: var(--text-faint); font-size: 0.85rem; margin-bottom: 0.4rem; }
+.profile-bio { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; max-width: 420px; }
+.profile-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; padding-top: 0.75rem; margin-left: auto; }
+
+.profile-stats-row {
+  display: flex;
+  border-top: 1px solid var(--border-subtle);
+  margin: 0 2rem;
+  padding: 1.25rem 0;
+  gap: 0;
+}
+.profile-stat {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem;
+  border-right: 1px solid var(--border-subtle);
+}
+.profile-stat:last-child { border-right: none; }
+.profile-stat-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.profile-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.2rem;
+}
+
+/* ─── Post Detail danger pulse ────────────────────────────────────── */
+.btn-danger-pulse {
+  animation: dangerPulse 0.5s ease;
+}
+@keyframes dangerPulse {
+  0%, 100% { box-shadow: 0 4px 16px var(--danger-glow); }
+  50%       { box-shadow: 0 4px 30px rgba(239,68,68,0.6); }
+}
+
+/* ─── btn-icon danger variant ─────────────────────────────────────── */
+.btn-icon-danger {
+  background: rgba(239,68,68,0.1) !important;
+  border-color: rgba(239,68,68,0.35) !important;
+  color: #f87171 !important;
+}
+
+/* ─── Misc Extras ─────────────────────────────────────────────────── */
+code {
+  background: rgba(124,58,237,0.12);
+  color: var(--primary-light);
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88em;
+}
+
+/* Responsive auth */
+@media (max-width: 480px) {
+  .auth-card { padding: 2rem 1.25rem; }
+  .profile-body { flex-direction: column; }
+  .profile-actions { margin-left: 0; }
+}
