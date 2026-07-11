@@ -20,7 +20,11 @@ const api = axios.create({
 // ─── Request Interceptor ──────────────────────────────────────────────────────
 api.interceptors.request.use(
   (config) => {
-    // Add auth token here if needed: config.headers.Authorization = `Bearer ${token}`;
+    // Attach JWT token from localStorage if present (for backend-protected routes)
+    const token = localStorage.getItem("bs_token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error),
@@ -34,13 +38,14 @@ api.interceptors.response.use(
       error.response?.data?.message ||
       error.message ||
       "An unexpected error occurred";
-    
+
     console.error("API Error:", {
       status: error.response?.status,
       url: error.config?.url,
       method: error.config?.method,
       message,
     });
+
     return Promise.reject(error);
   },
 );

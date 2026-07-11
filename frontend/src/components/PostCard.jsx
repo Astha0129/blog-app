@@ -49,7 +49,7 @@ function PostCard({ post, onDelete, compact = false }) {
         <img
           src={post.image || "https://picsum.photos/600/400"}
           alt={post.title}
-          className="img-fluid"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
       </div>
 

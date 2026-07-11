@@ -105,7 +105,7 @@ function Home() {
       result = result.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
-          p.excerpt.toLowerCase().includes(q) ||
+          (p.excerpt || '').toLowerCase().includes(q) ||
           (p.author?.name || p.author || "").toLowerCase().includes(q) ||
           (p.tags || []).some((t) => t.toLowerCase().includes(q)),
       );

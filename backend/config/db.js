@@ -16,5 +16,12 @@ const pool = mysql.createPool({
     rejectUnauthorized: false,
   },
 });
-
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error("Database connection failed:", err);
+  } else {
+    console.log("✅ Database Connected Successfully");
+    connection.release();
+  }
+});
 module.exports = pool.promise();

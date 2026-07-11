@@ -15,12 +15,13 @@ export function PostProvider({ children }) {
   async function fetchPosts() {
     try {
       setLoading(true);
-
       const res = await api.get("/posts");
-
-      setPosts(res.data.data);
+      // Guard: ensure we always set an array even if API shape is unexpected
+      const data = res.data?.data;
+      setPosts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching posts:", error);
+      setPosts([]); // ensure posts is always an array on failure
     } finally {
       setLoading(false);
     }
@@ -34,11 +35,11 @@ export function PostProvider({ children }) {
   async function addPost(postData) {
     try {
       const res = await api.post("/posts", postData);
-
       await fetchPosts();
-return res.data.data;
+      return res.data.data;
     } catch (error) {
       console.error("Error creating post:", error);
+      throw error;
     }
   }
 

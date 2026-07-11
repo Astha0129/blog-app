@@ -40,51 +40,33 @@ function EditPost() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validate = () => {
     let newErrors = {};
-
-    if (!form.title.trim()) {
-      newErrors.title = "Title is required";
-    }
-
-    if (!form.category.trim()) {
-      newErrors.category = "Category is required";
-    }
-
-    if (!form.content.trim()) {
-      newErrors.content = "Content is required";
-    }
-
+    if (!form.title.trim()) newErrors.title = "Title is required.";
+    if (!form.category.trim()) newErrors.category = "Category is required.";
+    if (!form.content.trim()) newErrors.content = "Content is required.";
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validate()) return;
 
     try {
       setSubmitting(true);
-
       await updatePost(id, form);
-
       navigate(`/posts/${id}`);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      setErrors((prev) => ({
+        ...prev,
+        server: "Failed to update post. Please try again.",
+      }));
     } finally {
       setSubmitting(false);
     }
@@ -94,140 +76,157 @@ function EditPost() {
     return <Loading />;
   }
 
-  return (    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-lg-8">
+  return (
+    <div className="page-container page-enter">
+      <Link
+        to={`/posts/${id}`}
+        className="btn-ghost mb-4"
+        style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
+      >
+        <i className="bi bi-arrow-left" /> Back to Post
+      </Link>
 
-          <Link
-            to={`/posts/${id}`}
-            className="btn btn-outline-secondary mb-4"
+      <div className="form-card">
+        {/* Header */}
+        <div style={{ marginBottom: "2rem" }}>
+          <h1
+            className="section-heading"
+            style={{ fontSize: "1.8rem", marginBottom: "0.25rem" }}
           >
-            ← Back
-          </Link>
+            ✏️ Edit Post
+          </h1>
+          <p style={{ color: "var(--text-faint)", fontSize: "0.9rem" }}>
+            Update your post details below.
+          </p>
+        </div>
 
-          <div className="card shadow-sm border-0">
+        {errors.server && (
+          <div className="alert-custom alert-danger" style={{ marginBottom: "1.5rem" }}>
+            <i className="bi bi-exclamation-triangle-fill" />
+            {errors.server}
+          </div>
+        )}
 
-            <div className="card-header bg-warning">
-              <h3 className="mb-0">Edit Post</h3>
-            </div>
-
-            <div className="card-body">
-
-              <form onSubmit={handleSubmit}>
-
-                {/* Title */}
-                <div className="mb-3">
-                  <label className="form-label">
-                    Title
-                  </label>
-
-                  <input
-                    type="text"
-                    name="title"
-                    className={`form-control ${
-                      errors.title ? "is-invalid" : ""
-                    }`}
-                    value={form.title}
-                    onChange={handleChange}
-                  />
-
-                  {errors.title && (
-                    <div className="invalid-feedback">
-                      {errors.title}
-                    </div>
-                  )}
-                </div>
-
-                {/* Category */}
-                <div className="mb-3">
-                  <label className="form-label">
-                    Category
-                  </label>
-
-                  <input
-                    type="text"
-                    name="category"
-                    className={`form-control ${
-                      errors.category ? "is-invalid" : ""
-                    }`}
-                    value={form.category}
-                    onChange={handleChange}
-                  />
-
-                  {errors.category && (
-                    <div className="invalid-feedback">
-                      {errors.category}
-                    </div>
-                  )}
-                </div>
-
-                {/* Image */}
-                <div className="mb-3">
-                  <label className="form-label">
-                    Image URL
-                  </label>
-
-                  <input
-                    type="text"
-                    name="image"
-                    className="form-control"
-                    value={form.image}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="mb-3">
-                  <label className="form-label">
-                    Content
-                  </label>
-
-                  <textarea
-                    rows="8"
-                    name="content"
-                    className={`form-control ${
-                      errors.content ? "is-invalid" : ""
-                    }`}
-                    value={form.content}
-                    onChange={handleChange}
-                  />
-
-                  {errors.content && (
-                    <div className="invalid-feedback">
-                      {errors.content}
-                    </div>
-                  )}
-                </div>
-
-                <div className="d-flex gap-2">
-
-                  <button
-                    type="submit"
-                    className="btn btn-warning"
-                    disabled={submitting}
-                  >
-                    {submitting
-                      ? "Updating..."
-                      : "Update Post"}
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => navigate(`/posts/${id}`)}
-                  >
-                    Cancel
-                  </button>
-
-                </div>
-
-              </form>
-
-            </div>
-
+        <form onSubmit={handleSubmit} noValidate id="edit-post-form">
+          {/* Title */}
+          <div className="form-group">
+            <label className="form-label-custom" htmlFor="ep-title">
+              <i className="bi bi-type-h1" /> Title *
+            </label>
+            <input
+              id="ep-title"
+              type="text"
+              name="title"
+              className={`form-control-custom ${errors.title ? "input-error" : ""}`}
+              value={form.title}
+              onChange={handleChange}
+              placeholder="Post title…"
+            />
+            {errors.title && <p className="field-error">{errors.title}</p>}
           </div>
 
-        </div>
+          {/* Category */}
+          <div className="form-group">
+            <label className="form-label-custom" htmlFor="ep-category">
+              <i className="bi bi-tag" /> Category *
+            </label>
+            <select
+              id="ep-category"
+              name="category"
+              className={`form-control-custom ${errors.category ? "input-error" : ""}`}
+              value={form.category}
+              onChange={handleChange}
+              style={{ cursor: "pointer" }}
+            >
+              <option value="">Choose Category</option>
+              <option>Technology</option>
+              <option>Programming</option>
+              <option>JavaScript</option>
+              <option>React</option>
+              <option>Backend</option>
+              <option>Database</option>
+              <option>General</option>
+            </select>
+            {errors.category && (
+              <p className="field-error">{errors.category}</p>
+            )}
+          </div>
+
+          {/* Image URL */}
+          <div className="form-group">
+            <label className="form-label-custom" htmlFor="ep-image">
+              <i className="bi bi-image" /> Cover Image URL{" "}
+              <span
+                style={{
+                  color: "var(--text-faint)",
+                  fontWeight: 400,
+                  textTransform: "none",
+                  fontSize: "0.78rem",
+                }}
+              >
+                (optional)
+              </span>
+            </label>
+            <input
+              id="ep-image"
+              type="url"
+              name="image"
+              className="form-control-custom"
+              value={form.image}
+              onChange={handleChange}
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="form-group">
+            <label className="form-label-custom" htmlFor="ep-content">
+              <i className="bi bi-file-text" /> Content *
+            </label>
+            <textarea
+              id="ep-content"
+              name="content"
+              rows={12}
+              className={`form-control-custom ${errors.content ? "input-error" : ""}`}
+              value={form.content}
+              onChange={handleChange}
+              placeholder="Write your post content here…"
+            />
+            <div className="char-counter">{form.content.length} characters</div>
+            {errors.content && <p className="field-error">{errors.content}</p>}
+          </div>
+
+          {/* Actions */}
+          <div className="d-flex gap-2 mt-3">
+            <button
+              type="submit"
+              className="btn-primary-custom"
+              disabled={submitting}
+              id="edit-post-submit"
+            >
+              {submitting ? (
+                <>
+                  <span
+                    className="spinner-ring"
+                    style={{ width: 16, height: 16, borderWidth: 2 }}
+                  />
+                  Updating…
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-check-lg" /> Update Post
+                </>
+              )}
+            </button>
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={() => navigate(`/posts/${id}`)}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

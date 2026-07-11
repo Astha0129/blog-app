@@ -25,10 +25,9 @@ function Signup() {
     e.preventDefault();
     const errs = validateSignupForm(form);
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setSubmitting(true);
     try {
-      setSubmitting(true);
-      await new Promise((r) => setTimeout(r, 600));
-      signup(form.name, form.email, form.password);
+      await signup(form.name, form.email, form.password);
       navigate('/');
     } catch (err) {
       setServerError(err.message);

@@ -139,12 +139,12 @@ function Navbar({ onSearch }) {
             ) : (
               <>
                 <li className="nav-item">
-                  <NavLink
+                  <Link
                     to="/login"
-                    className={({ isActive }) => `nav-link nav-link-custom ${isActive ? 'active' : ''}`}
+                    className="nav-link nav-link-custom"
                   >
                     Sign In
-                  </NavLink>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <NavLink to="/signup">

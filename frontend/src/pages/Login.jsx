@@ -29,22 +29,15 @@ function Login() {
     e.preventDefault();
     const errs = validateLoginForm(form);
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setSubmitting(true);
     try {
-      setSubmitting(true);
-      await new Promise((r) => setTimeout(r, 500)); // simulate network
-      login(form.email, form.password);
+      await login(form.email, form.password);
       navigate(from, { replace: true });
     } catch (err) {
       setServerError(err.message);
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const fillDemo = () => {
-    setForm({ email: 'aria@example.com', password: 'password123' });
-    setErrors({});
-    setServerError('');
   };
 
   return (
@@ -57,24 +50,8 @@ function Login() {
           <p className="auth-subtitle">Sign in to your BlogSphere account</p>
         </div>
 
-        {/* Demo hint */}
-        <div className="alert-custom alert-info mb-3" style={{ fontSize: '0.82rem' }}>
-          <i className="bi bi-info-circle" />
-          <span>
-            <strong>Demo:</strong> Use <code>aria@example.com</code> / <code>password123</code>
-            {' '}or{' '}
-            <button
-              type="button"
-              onClick={fillDemo}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--primary-light)', fontWeight: 600, padding: 0 }}
-            >
-              autofill
-            </button>
-          </span>
-        </div>
-
         {serverError && (
-          <div className="alert-custom alert-danger">
+          <div className="alert-custom alert-danger" style={{ marginBottom: '1rem' }}>
             <i className="bi bi-exclamation-triangle-fill" />
             {serverError}
           </div>
@@ -105,9 +82,6 @@ function Login() {
               <label className="form-label-custom mb-0" htmlFor="login-password">
                 <i className="bi bi-lock" /> Password
               </label>
-              <span style={{ fontSize: '0.8rem', color: 'var(--primary-light)', cursor: 'pointer' }}>
-                Forgot password?
-              </span>
             </div>
             <div className="input-with-icon">
               <input

@@ -27,6 +27,34 @@
   --shadow-glow: 0 0 40px rgba(124,58,237,0.12);
 }
 
+/* ─── Light Theme: Form input text forced visible ─────────────────── */
+/* CSS variables can fail to resolve inside -webkit-text-fill-color    */
+/* and :-webkit-autofill in some browsers; hardcode to be safe.        */
+[data-theme='light'] .form-control-custom {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  background: #ffffff !important;
+  caret-color: #0f172a !important;
+}
+[data-theme='light'] .form-control-custom::placeholder {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+}
+[data-theme='light'] .form-control-custom:focus {
+  background: rgba(124,58,237,0.05) !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+[data-theme='light'] .form-control-custom:-webkit-autofill,
+[data-theme='light'] .form-control-custom:-webkit-autofill:hover,
+[data-theme='light'] .form-control-custom:-webkit-autofill:focus,
+[data-theme='light'] .form-control-custom:-webkit-autofill:active {
+  -webkit-text-fill-color: #0f172a !important;
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  caret-color: #0f172a !important;
+  color: #0f172a !important;
+}
+
 [data-theme='light'] body {
   background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #f0f9ff 100%);
 }
@@ -51,6 +79,190 @@
   background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
   background-size: 200% 100%;
 }
+
+/* ─── Light Theme: Navbar ─────────────────────────────────────────── */
+/* Brand: remove the white-start gradient that disappears on light bg  */
+[data-theme='light'] .navbar-brand-custom {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Nav links: make them dark so they show on the light navbar */
+[data-theme='light'] .nav-link-custom {
+  color: #334155 !important;
+}
+[data-theme='light'] .nav-link-custom:hover,
+[data-theme='light'] .nav-link-custom.active {
+  color: #0f172a !important;
+  background: rgba(0,0,0,0.06) !important;
+}
+
+/* Sign-In link specifically */
+[data-theme='light'] .nav-link-custom {
+  color: #334155 !important;
+}
+
+/* btn-icon (theme toggle / hamburger) */
+[data-theme='light'] .btn-icon {
+  color: #475569;
+  border-color: rgba(0,0,0,0.12);
+}
+[data-theme='light'] .btn-icon:hover {
+  background: rgba(0,0,0,0.06);
+  color: #0f172a;
+}
+
+/* ─── Light Theme: Hero ───────────────────────────────────────────── */
+/* Hero title lines use primary-light (#a78bfa) which is too faint on white */
+[data-theme='light'] .hero-title-line1,
+[data-theme='light'] .hero-title-line2 {
+  background: linear-gradient(135deg, #6d28d9 0%, #be185d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme='light'] .hero-subtitle {
+  color: #475569;
+}
+
+/* Hero stat numbers */
+[data-theme='light'] .hero-stat-num {
+  background: linear-gradient(135deg, #6d28d9, #be185d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+[data-theme='light'] .hero-stat-label { color: #64748b; }
+
+/* Hero search */
+[data-theme='light'] .hero-search-wrapper {
+  background: rgba(255,255,255,0.9);
+  border-color: rgba(0,0,0,0.14);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+[data-theme='light'] .hero-search-input {
+  color: #0f172a;
+}
+[data-theme='light'] .hero-search-input::placeholder { color: #94a3b8; }
+
+/* Hero badge */
+[data-theme='light'] .hero-badge {
+  background: rgba(109,40,217,0.08);
+  border-color: rgba(109,40,217,0.25);
+  color: #6d28d9;
+}
+
+/* ─── Light Theme: Buttons ────────────────────────────────────────── */
+/* btn-secondary-custom border is rgba(255,255,255,0.12) in dark - invisible on light */
+[data-theme='light'] .btn-secondary-custom {
+  color: #334155;
+  border-color: rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.8);
+}
+[data-theme='light'] .btn-secondary-custom:hover {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(109,40,217,0.4);
+  color: #0f172a;
+}
+
+[data-theme='light'] .btn-ghost {
+  color: #475569;
+  border-color: rgba(0,0,0,0.15);
+}
+[data-theme='light'] .btn-ghost:hover {
+  background: rgba(0,0,0,0.05);
+  color: #0f172a;
+}
+
+/* ─── Light Theme: Post Cards ─────────────────────────────────────── */
+[data-theme='light'] .post-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.08);
+}
+[data-theme='light'] .post-card-title {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+[data-theme='light'] .post-card:hover .post-card-title {
+  color: #6d28d9 !important;
+  -webkit-text-fill-color: #6d28d9 !important;
+}
+[data-theme='light'] .post-card-excerpt { color: #475569; }
+[data-theme='light'] .post-author-name  { color: #334155; }
+[data-theme='light'] .post-date         { color: #64748b; }
+
+/* ─── Light Theme: Section headings ──────────────────────────────── */
+/* These use gradient text that fades from text-primary → text-secondary */
+/* In dark those are light colors, but in light they're dark — still fine */
+[data-theme='light'] .section-heading {
+  background: linear-gradient(135deg, #0f172a, #374151);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Light Theme: Tags / Chips ───────────────────────────────────── */
+[data-theme='light'] .tag-chip {
+  background: rgba(109,40,217,0.08);
+  border-color: rgba(109,40,217,0.2);
+  color: #6d28d9;
+}
+
+/* ─── Light Theme: Comments & Forms ───────────────────────────────── */
+[data-theme='light'] .comment-item {
+  background: #f8fafc;
+  border-color: rgba(0,0,0,0.06);
+}
+[data-theme='light'] .comment-author { color: #0f172a; }
+[data-theme='light'] .comment-text   { color: #475569; }
+[data-theme='light'] .comment-time   { color: #94a3b8; }
+[data-theme='light'] .comment-form   { background: #f8fafc; border-color: rgba(0,0,0,0.06); }
+
+[data-theme='light'] .form-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.08);
+}
+[data-theme='light'] .form-label-custom { color: #374151; }
+[data-theme='light'] .char-counter      { color: #64748b; }
+
+/* ─── Light Theme: Profile & Auth cards ───────────────────────────── */
+[data-theme='light'] .auth-card,
+[data-theme='light'] .profile-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.08);
+}
+[data-theme='light'] .auth-title    { color: #0f172a; }
+[data-theme='light'] .auth-subtitle { color: #475569; }
+[data-theme='light'] .auth-footer   { color: #64748b; }
+[data-theme='light'] .profile-name  { color: #0f172a; }
+[data-theme='light'] .profile-email { color: #64748b; }
+[data-theme='light'] .profile-bio   { color: #475569; }
+
+/* ─── Light Theme: Post Detail ────────────────────────────────────── */
+[data-theme='light'] .post-detail-title {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+[data-theme='light'] .post-detail-content { color: #1e293b; }
+
+/* ─── Light Theme: Alerts ─────────────────────────────────────────── */
+[data-theme='light'] .alert-custom.alert-info {
+  background: rgba(109,40,217,0.06);
+  border-color: rgba(109,40,217,0.2);
+  color: #5b21b6;
+}
+[data-theme='light'] .alert-custom.alert-danger {
+  background: rgba(239,68,68,0.06);
+  border-color: rgba(239,68,68,0.2);
+  color: #b91c1c;
+}
+
+/* ─── Light Theme: Empty state ────────────────────────────────────── */
+[data-theme='light'] .empty-state h3 { color: #0f172a; }
+[data-theme='light'] .empty-state p  { color: #475569; }
 
 /* ─── Hero (supplemental) ─────────────────────────────────────────── */
 .hero-content {
@@ -278,8 +490,18 @@
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 0.35rem;
+  user-select: none;
+  cursor: default;
 }
-.auth-subtitle { color: var(--text-muted); font-size: 0.9rem; }
+.auth-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  user-select: none;
+  cursor: default;
+}
+.auth-header {
+  user-select: none;
+}
 .auth-footer {
   text-align: center;
   color: var(--text-muted);

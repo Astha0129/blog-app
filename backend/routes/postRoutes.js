@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
 const {
   getAllPosts,
   getPostById,
@@ -8,19 +9,13 @@ const {
   deletePost,
 } = require('../controllers/postController');
 
-// GET    /api/posts        → Fetch all posts
-router.get('/', getAllPosts);
+// Public Routes
+router.get("/", getAllPosts);
+router.get("/:id", getPostById);
 
-// GET    /api/posts/:id    → Fetch single post
-router.get('/:id', getPostById);
-
-// POST   /api/posts        → Create a new post
-router.post('/', createPost);
-
-// PUT    /api/posts/:id    → Update a post
-router.put('/:id', updatePost);
-
-// DELETE /api/posts/:id    → Delete a post
-router.delete('/:id', deletePost);
+// Protected Routes
+router.post("/", authMiddleware, createPost);
+router.put("/:id", authMiddleware, updatePost);
+router.delete("/:id", authMiddleware, deletePost);
 
 module.exports = router;

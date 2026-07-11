@@ -1,93 +1,85 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../api/axios';
 
 const AuthContext = createContext(null);
 
-const DEMO_USERS = [
-  { id: 'u1', name: 'Aria Chen',    email: 'aria@example.com',   password: 'password123', avatar: 'AC', bio: 'Full-stack developer & tech writer.', joinedAt: '2024-01-01' },
-  { id: 'u2', name: 'Marcus Webb',  email: 'marcus@example.com', password: 'password123', avatar: 'MW', bio: 'UX designer and design systems enthusiast.', joinedAt: '2024-02-15' },
-  { id: 'u3', name: 'Priya Mehta',  email: 'priya@example.com',  password: 'password123', avatar: 'PM', bio: 'Travel blogger, wanderer, storyteller.', joinedAt: '2024-03-10' },
-];
-
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [users, setUsers] = useState(DEMO_USERS);
   const [loading, setLoading] = useState(true);
 
-  // Restore session from localStorage
+  // Restore session from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem('bs_user');
     if (stored) {
       try { setCurrentUser(JSON.parse(stored)); }
       catch { localStorage.removeItem('bs_user'); }
     }
-    const storedUsers = localStorage.getItem('bs_users');
-    if (storedUsers) {
-      try { setUsers(JSON.parse(storedUsers)); }
-      catch { /* ignore */ }
-    }
     setLoading(false);
   }, []);
 
-  const persistUser = (user) => {
+  const persistUser = (user, token) => {
     setCurrentUser(user);
-    if (user) localStorage.setItem('bs_user', JSON.stringify(user));
-    else localStorage.removeItem('bs_user');
+    if (user) {
+      localStorage.setItem('bs_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('bs_user');
+      localStorage.removeItem('bs_token');
+    }
+    if (token) {
+      localStorage.setItem('bs_token', token);
+    }
   };
 
-  const persistUsers = (list) => {
-    setUsers(list);
-    localStorage.setItem('bs_users', JSON.stringify(list));
+  /** Sign in — calls the real backend; throws a user-friendly error on failure */
+  const login = async (email, password) => {
+    try {
+      const res = await api.post('/auth/login', { email, password });
+      const { user, token } = res.data;
+      persistUser(user, token);
+      return user;
+    } catch (err) {
+      // Surface the backend's own message, or a clean fallback
+      const msg =
+        err.response?.data?.message ||
+        (err.code === 'ERR_NETWORK'
+          ? 'Cannot reach the server. Please make sure the backend is running.'
+          : 'Invalid email or password.');
+      throw new Error(msg);
+    }
   };
 
-  /** Sign in with email + password */
-  const login = (email, password) => {
-    const found = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
-    if (!found) throw new Error('Invalid email or password.');
-    const { password: _pw, ...safeUser } = found;
-    persistUser(safeUser);
-    return safeUser;
+  /** Register a new account then auto-login */
+  const signup = async (name, email, password) => {
+    try {
+      await api.post('/auth/register', { name, email, password });
+      // Auto-login after successful registration
+      return await login(email, password);
+    } catch (err) {
+      // If login was already thrown, rethrow it
+      if (err.message.includes('Cannot reach')) throw err;
+      const msg =
+        err.response?.data?.message ||
+        'Registration failed. Please try again.';
+      throw new Error(msg);
+    }
   };
 
-  /** Register a new account */
-  const signup = (name, email, password) => {
-    const exists = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
-    if (exists) throw new Error('An account with this email already exists.');
-    const initials = name.trim().split(' ').map((n) => n[0].toUpperCase()).join('').slice(0, 2);
-    const newUser = {
-      id: `u_${Date.now()}`,
-      name: name.trim(),
-      email,
-      password,
-      avatar: initials,
-      bio: '',
-      joinedAt: new Date().toISOString().split('T')[0],
-    };
-    const updated = [...users, newUser];
-    persistUsers(updated);
-    const { password: _pw, ...safeUser } = newUser;
-    persistUser(safeUser);
-    return safeUser;
-  };
+  /** Sign out — clear all stored auth state */
+  const logout = () => persistUser(null, null);
 
-  /** Sign out */
-  const logout = () => persistUser(null);
-
-  /** Update profile info */
+  /** Update profile locally (name display etc.) */
   const updateProfile = (updates) => {
     const updated = { ...currentUser, ...updates };
-    persistUser(updated);
-    const updatedUsers = users.map((u) =>
-      u.id === updated.id ? { ...u, ...updates } : u
-    );
-    persistUsers(updatedUsers);
+    setCurrentUser(updated);
+    localStorage.setItem('bs_user', JSON.stringify(updated));
   };
 
   const isAuthenticated = !!currentUser;
 
   return (
-    <AuthContext.Provider value={{ currentUser, isAuthenticated, loading, login, logout, signup, updateProfile }}>
+    <AuthContext.Provider
+      value={{ currentUser, isAuthenticated, loading, login, logout, signup, updateProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );
